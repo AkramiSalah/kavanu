@@ -1,0 +1,27 @@
+{
+    "TableName": "Barber",
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "phone_number",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "appointment_timestamp",
+            "AttributeType": "S"
+        }
+    ],
+    "KeySchema": [
+        {
+            "AttributeName":  "phone_number",
+            "KeyType": "HASH"
+        },
+        {
+            "AttributeName": "appointment_timestamp",
+            "KeyType": "RANGE"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+    }
+}
