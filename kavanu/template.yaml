@@ -8,17 +8,17 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 60
 
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
     LoggingConfig:
       LogFormat: JSON
 Resources:
-  HelloWorldFunction:
+  CreateAppointmentFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/
-      Handler: app.lambdaHandler
+      CodeUri: ddb-interactions/create-appointment/
+      Handler: app.createAppointment
       Runtime: nodejs20.x
       Architectures:
       - x86_64
@@ -26,19 +26,78 @@ Resources:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /create-appointment
+            Method: post
+
+  RetriveAppointmentFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ddb-interactions/retrive-appointment/
+      Handler: app.retriveAppointment
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /retrive-appointment
+            Method: get
+  CandelAppointmentFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ddb-interactions/cancel-appointment/
+      Handler: app.cancelAppointment
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /cancel-appointment
+            Method: delete
+  UpdateClientAmountFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ddb-interactions/update-client-amount/
+      Handler: app.updateClientAmount
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /update-appointment
+            Method: delete
+ # utility functions  
+  GetTableItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ddb-interactions/utils/get-table-items/
+      Handler: app.getTableItems
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Events:
+        GetTableItems:
+          Type: Api
+          Properties:
+            Path: /table
             Method: get
 
-Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  ResetDynamoDBTableFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ddb-interactions/utils/reset-table/
+      Handler: app.resetTable 
+      Runtime: nodejs20.x 
+      Architectures:
+        - x86_64
+      Events:
+        ResetTableEvent:
+          Type: Api
+          Properties:
+            Path: /reset-table
+            Method: post

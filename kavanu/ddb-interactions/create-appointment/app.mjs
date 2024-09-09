@@ -1,5 +1,5 @@
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
-import { dayjs } from 'dayjs';
+import  dayjs  from 'dayjs';
 
 const client = new DynamoDBClient({
     endpoint: 'http://host.docker.internal:8000',
@@ -17,16 +17,14 @@ export const createAppointment = async (event) => {
       remarks
     }= JSON.parse(event.body);
     
-    appointment_timestamp = dayjs(appointment_time_and_date);
-    
+    let appointment_timestamp = dayjs(appointment_time_and_date).unix(); 
+  
     const appointment = {
       phone_number: {S: phone_number},
-      appointment_timestamp: {S : appointment_timestamp.unix()},
+      appointment_timestamp: {S : appointment_timestamp},
       amount_of_clients: {N : amount_of_clients},
       remarks: {S: remarks}
     }
-
-    
 
     const params = {
       TableName: "Barber",

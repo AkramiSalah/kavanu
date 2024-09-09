@@ -1,0 +1,29 @@
+{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "hello world sample for NodeJS",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awslabs/aws-sam-cli.git#develop"
+  },
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.645.0",
+    "axios": ">=1.6.0",
+    "dayjs": "^1.11.13"
+  },
+  "scripts": {
+    "test": "mocha tests/unit/"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/awslabs/aws-sam-cli/issues"
+  },
+  "homepage": "https://github.com/awslabs/aws-sam-cli/tree/develop#readme",
+  "keywords": []
+}
